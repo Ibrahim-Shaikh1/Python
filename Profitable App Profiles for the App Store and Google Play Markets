@@ -1,0 +1,916 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def explore_data(dataset, start, end, rows_and_columns=False):\n",
+    "    dataset_slice = dataset[start:end]    \n",
+    "    for row in dataset_slice:\n",
+    "        print(row)\n",
+    "        print('\\n') # adds a new (empty) line after each row\n",
+    "\n",
+    "    if rows_and_columns:\n",
+    "        print('Number of rows:', len(dataset))\n",
+    "        print('Number of columns:', len(dataset[0]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "###App User Insights \n",
+    "###The owner of this dataset receives majority of their revenue from advertisments on their free apps. Higher user traffic and engagement result in larger advertising income. The goal is to leverage this data to increase ad engagement and this profits"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from csv import reader\n",
+    "opened_file_a = open('AppleStore.csv')\n",
+    "read_file_a = reader(opened_file_a) \n",
+    "app_data_apple = list(read_file_a)\n",
+    "ios_header = app_data_apple[0]\n",
+    "ios = app_data_apple[1:]\n",
+    "\n",
+    "opened_file_g = open('googleplaystore.csv')\n",
+    "read_file_g = reader(opened_file_g) \n",
+    "app_data_google = list(read_file_g)\n",
+    "android_header = app_data_google[0]\n",
+    "android = app_data_google[1:]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['App', 'Category', 'Rating', 'Reviews', 'Size', 'Installs', 'Type', 'Price', 'Content Rating', 'Genres', 'Last Updated', 'Current Ver', 'Android Ver']\n",
+      "\n",
+      "\n",
+      "['Photo Editor & Candy Camera & Grid & ScrapBook', 'ART_AND_DESIGN', '4.1', '159', '19M', '10,000+', 'Free', '0', 'Everyone', 'Art & Design', 'January 7, 2018', '1.0.0', '4.0.3 and up']\n",
+      "\n",
+      "\n",
+      "['Coloring book moana', 'ART_AND_DESIGN', '3.9', '967', '14M', '500,000+', 'Free', '0', 'Everyone', 'Art & Design;Pretend Play', 'January 15, 2018', '2.0.0', '4.0.3 and up']\n",
+      "\n",
+      "\n",
+      "['U Launcher Lite – FREE Live Cool Themes, Hide Apps', 'ART_AND_DESIGN', '4.7', '87510', '8.7M', '5,000,000+', 'Free', '0', 'Everyone', 'Art & Design', 'August 1, 2018', '1.2.4', '4.0.3 and up']\n",
+      "\n",
+      "\n",
+      "Number of rows: 10841\n",
+      "Number of columns: 13\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(android_header)\n",
+    "print('\\n')\n",
+    "explore_data(android, 0, 3, True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['id', 'track_name', 'size_bytes', 'currency', 'price', 'rating_count_tot', 'rating_count_ver', 'user_rating', 'user_rating_ver', 'ver', 'cont_rating', 'prime_genre', 'sup_devices.num', 'ipadSc_urls.num', 'lang.num', 'vpp_lic']\n",
+      "\n",
+      "\n",
+      "['284882215', 'Facebook', '389879808', 'USD', '0.0', '2974676', '212', '3.5', '3.5', '95.0', '4+', 'Social Networking', '37', '1', '29', '1']\n",
+      "\n",
+      "\n",
+      "['389801252', 'Instagram', '113954816', 'USD', '0.0', '2161558', '1289', '4.5', '4.0', '10.23', '12+', 'Photo & Video', '37', '0', '29', '1']\n",
+      "\n",
+      "\n",
+      "['529479190', 'Clash of Clans', '116476928', 'USD', '0.0', '2130805', '579', '4.5', '4.5', '9.24.12', '9+', 'Games', '38', '5', '18', '1']\n",
+      "\n",
+      "\n",
+      "Number of rows: 7197\n",
+      "Number of columns: 16\n",
+      "None\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(ios_header)\n",
+    "print('\\n')\n",
+    "print(explore_data(ios, 0,3, True))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['App', 'Category', 'Rating', 'Reviews', 'Size', 'Installs', 'Type', 'Price', 'Content Rating', 'Genres', 'Last Updated', 'Current Ver', 'Android Ver']\n",
+      "\n",
+      "\n",
+      "['Jazz Wi-Fi', 'COMMUNICATION', '3.4', '49', '4.0M', '10,000+', 'Free', '0', 'Everyone', 'Communication', 'February 10, 2017', '0.1', '2.3 and up']\n",
+      "\n",
+      "\n",
+      "['Xposed Wi-Fi-Pwd', 'PERSONALIZATION', '3.5', '1042', '404k', '100,000+', 'Free', '0', 'Everyone', 'Personalization', 'August 5, 2014', '3.0.0', '4.0.3 and up']\n",
+      "\n",
+      "\n",
+      "['Life Made WI-Fi Touchscreen Photo Frame', '1.9', '19', '3.0M', '1,000+', 'Free', '0', 'Everyone', '', 'February 11, 2018', '1.0.19', '4.0 and up']\n",
+      "\n",
+      "\n",
+      "['osmino Wi-Fi: free WiFi', 'TOOLS', '4.2', '134203', '4.1M', '10,000,000+', 'Free', '0', 'Everyone', 'Tools', 'August 7, 2018', '6.06.14', '4.4 and up']\n",
+      "\n",
+      "\n",
+      "Number of rows: 10841\n",
+      "Number of columns: 13\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(android_header)\n",
+    "print('\\n')\n",
+    "explore_data(android, 10470, 10474, True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "del android [10472]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['App', 'Category', 'Rating', 'Reviews', 'Size', 'Installs', 'Type', 'Price', 'Content Rating', 'Genres', 'Last Updated', 'Current Ver', 'Android Ver']\n",
+      "\n",
+      "\n",
+      "['Jazz Wi-Fi', 'COMMUNICATION', '3.4', '49', '4.0M', '10,000+', 'Free', '0', 'Everyone', 'Communication', 'February 10, 2017', '0.1', '2.3 and up']\n",
+      "\n",
+      "\n",
+      "['Xposed Wi-Fi-Pwd', 'PERSONALIZATION', '3.5', '1042', '404k', '100,000+', 'Free', '0', 'Everyone', 'Personalization', 'August 5, 2014', '3.0.0', '4.0.3 and up']\n",
+      "\n",
+      "\n",
+      "['osmino Wi-Fi: free WiFi', 'TOOLS', '4.2', '134203', '4.1M', '10,000,000+', 'Free', '0', 'Everyone', 'Tools', 'August 7, 2018', '6.06.14', '4.4 and up']\n",
+      "\n",
+      "\n",
+      "Number of rows: 10840\n",
+      "Number of columns: 13\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(android_header)\n",
+    "print('\\n')\n",
+    "explore_data(android, 10470, 10473, True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Although we have our data readily availble now, we have to account for any potential duplicates present within. The following steps taken will find and seperate any duplicate values "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Number of duplicate Google Play Store apps: 1181\n",
+      "\n",
+      "\n",
+      "Examples of duplicate Google Play Store apps: ['Quick PDF Scanner + OCR FREE', 'Box', 'Google My Business', 'ZOOM Cloud Meetings', 'join.me - Simple Meetings', 'Box', 'Zenefits', 'Google Ads', 'Google My Business', 'Slack', 'FreshBooks Classic', 'Insightly CRM', 'QuickBooks Accounting: Invoicing & Expenses', 'HipChat - Chat Built for Teams', 'Xero Accounting Software', 'MailChimp - Email, Marketing Automation', 'Crew - Free Messaging and Scheduling', 'Asana: organize team projects', 'Google Analytics', 'AdWords Express']\n",
+      "\n",
+      "\n",
+      "Number of duplicate IOS apps: 0\n",
+      "\n",
+      "\n",
+      "Examples of duplicate IOS apps: []\n"
+     ]
+    }
+   ],
+   "source": [
+    "duplicate_apps_g = []\n",
+    "unique_apps_g = []\n",
+    "\n",
+    "for app in android: \n",
+    "    name = app[0]\n",
+    "    if name in unique_apps_g: \n",
+    "        duplicate_apps_g.append(name)\n",
+    "    else: \n",
+    "        unique_apps_g.append(name)\n",
+    "print ('Number of duplicate Google Play Store apps:', len(duplicate_apps_g))\n",
+    "print('\\n')\n",
+    "print ('Examples of duplicate Google Play Store apps:', duplicate_apps_g[:20])\n",
+    "print ('\\n')\n",
+    "\n",
+    "duplicate_apps_a = []\n",
+    "unique_apps_a = []\n",
+    "\n",
+    "for app in ios: \n",
+    "    name = app[0]\n",
+    "    if name in unique_apps_a: \n",
+    "        duplicate_apps_a.append(name)\n",
+    "    else: \n",
+    "        unique_apps_a.append(name)\n",
+    "print ('Number of duplicate IOS apps:', len(duplicate_apps_a))\n",
+    "print('\\n')\n",
+    "print ('Examples of duplicate IOS apps:', duplicate_apps_a[:20])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### As seen above, the google play store has over 1000 cases of duplicated apps that we would need to account for in our data. We can leave the IOS dataset untouched for now because it has no cases of duplication\n",
+    "### We are going to seperate and choose the most accurate android duplicate based on the one with the highest number of installs "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Expected length of updated Google Play Store Apps: 9659\n"
+     ]
+    }
+   ],
+   "source": [
+    "print ('Expected length of updated Google Play Store Apps:', len(android)- 1181)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Actual length of updated Google Play Store Apps: 9659\n"
+     ]
+    }
+   ],
+   "source": [
+    "reviews_max = {}\n",
+    "for app in android: \n",
+    "    name = app[0]\n",
+    "    n_installs= app[5]\n",
+    "    n_installs.replace('+', '')\n",
+    "    n_installs.replace(',', '')\n",
+    "    if name in reviews_max and reviews_max[name] < n_installs: \n",
+    "        reviews_max[name] = n_installs\n",
+    "    if name not in reviews_max: \n",
+    "        reviews_max[name] = n_installs\n",
+    "\n",
+    "print('Actual length of updated Google Play Store Apps:', len(reviews_max))\n",
+    "        "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Length of Cleaned Android List: 9659\n"
+     ]
+    }
+   ],
+   "source": [
+    "android_clean = []\n",
+    "already_added = []\n",
+    "for app in android: \n",
+    "    name = app[0]\n",
+    "    n_installs = app[5]\n",
+    "    if n_installs == reviews_max[name] and name not in already_added: \n",
+    "        android_clean.append(app[:])\n",
+    "        already_added.append(name)\n",
+    "print('Length of Cleaned Android List:', len(android_clean))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### We used our updated Google Play Store App list as a reference to create a Cleaned Android List of Lists"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Now that we have cleaned our data of duplicates, we must also remove any non-english titles as they are not relevant to the analysis we are conducting"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "True\n",
+      "False\n",
+      "True\n",
+      "True\n"
+     ]
+    }
+   ],
+   "source": [
+    "def engcheck(string): \n",
+    "    strike = 0\n",
+    "    for char in string: \n",
+    "        if ord(char) > 127:\n",
+    "            strike +=1\n",
+    "    if strike > 3: \n",
+    "        return False\n",
+    "    return True\n",
+    "print(engcheck('Instagram'))\n",
+    "print(engcheck('爱奇艺PPS -《欢乐颂2》电视剧热播'))\n",
+    "print(engcheck('Docs To Go™ Free Office Suite'))\n",
+    "print(engcheck('Instachat 😜'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Now that we have defined our function to filter non english titles, we can apply it to our data sets"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Length of Cleaned Android English List: 9614\n",
+      "Length of Cleaned IOS English List: 6183\n"
+     ]
+    }
+   ],
+   "source": [
+    "android_english = []\n",
+    "ios_english = []\n",
+    "for app in android_clean: \n",
+    "    name = app[0]\n",
+    "    if engcheck(name) == True: \n",
+    "        android_english.append(app[:])\n",
+    "        \n",
+    "for app in ios: \n",
+    "    name = app[1]\n",
+    "    if engcheck(name) == True: \n",
+    "        ios_english.append(app[:])\n",
+    "\n",
+    "print('Length of Cleaned Android English List:',len(android_english))\n",
+    "print('Length of Cleaned IOS English List:',len(ios_english))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Now that we have cleaned the data and removed non-english titles, we can move forward with isolating free apps "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Length of Free Cleaned Android English List: 8864\n",
+      "Length of Free Cleaned IOS English List: 3222\n"
+     ]
+    }
+   ],
+   "source": [
+    "free_android = []\n",
+    "free_ios = []\n",
+    " \n",
+    "for app in android_english: \n",
+    "    price = str(app[7])\n",
+    "    if price == '0' or price == 'Free': \n",
+    "        free_android.append(app[:])\n",
+    "for app in ios_english: \n",
+    "    price = str(app[4])\n",
+    "    if price == '0.0' or price == 'Free': \n",
+    "        free_ios.append(app[:])\n",
+    "print('Length of Free Cleaned Android English List:',len(free_android))\n",
+    "print('Length of Free Cleaned IOS English List:',len(free_ios))      "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Our next goal is to analyze this data to understand what type of apps do well in both app stores \n",
+    "### Our current validation stratgy consists of 3 steps. The first step is to build a minimal android version of the app and upload to Google Play Store. \n",
+    "### We are using this store and a minimal version in order to keep overhead costs low while still being able to scope the market. \n",
+    "### If we find success with an app with this limited release, we invest further capital in it to develop it more and provide more features. \n",
+    "### If the app is able to turn a profit after the first 6 months, we will build an IOS version and port it to the Apple Store.\n",
+    "### Our first step to beginning this process is to research apps genres that are the most common in respective stores."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['id', 'track_name', 'size_bytes', 'currency', 'price', 'rating_count_tot', 'rating_count_ver', 'user_rating', 'user_rating_ver', 'ver', 'cont_rating', 'prime_genre', 'sup_devices.num', 'ipadSc_urls.num', 'lang.num', 'vpp_lic']\n",
+      "\n",
+      "\n",
+      "['App', 'Category', 'Rating', 'Reviews', 'Size', 'Installs', 'Type', 'Price', 'Content Rating', 'Genres', 'Last Updated', 'Current Ver', 'Android Ver']\n"
+     ]
+    }
+   ],
+   "source": [
+    "print (ios_header) \n",
+    "print('\\n')\n",
+    "print (android_header)\n",
+    "### We are going to use prine genre (ios index 11 or -5) and category/genre (android index 1/-4) to identify most common genres"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def freq_table(dataset, index):\n",
+    "    ft = {}\n",
+    "    ftp = {}\n",
+    "    lendata= len(dataset)\n",
+    "    for app in dataset:\n",
+    "        value = app[index] \n",
+    "        if value in ft: \n",
+    "            ft[value] +=1 \n",
+    "            ftp[value] = 100*(ft[value]/lendata)\n",
+    "        else: \n",
+    "            ft[value] = 1 \n",
+    "            ftp[value] = 100*(1/lendata)\n",
+    "    return ftp "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def display_table(dataset, index):\n",
+    "    table = freq_table(dataset, index)\n",
+    "    table_display = []\n",
+    "    for key in table:\n",
+    "        key_val_as_tuple = (table[key], key)\n",
+    "        table_display.append(key_val_as_tuple)\n",
+    "\n",
+    "    table_sorted = sorted(table_display, reverse = True)\n",
+    "    for entry in table_sorted:\n",
+    "        print(entry[1], ':', entry[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Free IOS Prime Genre App Frequency(Out of 100):\n",
+      "\n",
+      "\n",
+      "Games : 58.16263190564867\n",
+      "Entertainment : 7.883302296710118\n",
+      "Photo & Video : 4.9658597144630665\n",
+      "Education : 3.662321539416512\n",
+      "Social Networking : 3.2898820608317814\n",
+      "Shopping : 2.60707635009311\n",
+      "Utilities : 2.5139664804469275\n",
+      "Sports : 2.1415270018621975\n",
+      "Music : 2.0484171322160147\n",
+      "Health & Fitness : 2.0173805090006205\n",
+      "Productivity : 1.7380509000620732\n",
+      "Lifestyle : 1.5828677839851024\n",
+      "News : 1.3345747982619491\n",
+      "Travel : 1.2414649286157666\n",
+      "Finance : 1.1173184357541899\n",
+      "Weather : 0.8690254500310366\n",
+      "Food & Drink : 0.8069522036002483\n",
+      "Reference : 0.5586592178770949\n",
+      "Business : 0.5276225946617008\n",
+      "Book : 0.4345127250155183\n",
+      "Navigation : 0.186219739292365\n",
+      "Medical : 0.186219739292365\n",
+      "Catalogs : 0.12414649286157665\n",
+      "\n",
+      "\n",
+      "Free Android Genre App Frequency(Out of 100):\n",
+      "\n",
+      "\n",
+      "Tools : 8.438628158844766\n",
+      "Entertainment : 6.069494584837545\n",
+      "Education : 5.347472924187725\n",
+      "Business : 4.591606498194946\n",
+      "Productivity : 3.892148014440433\n",
+      "Lifestyle : 3.892148014440433\n",
+      "Finance : 3.7003610108303246\n",
+      "Medical : 3.531137184115524\n",
+      "Sports : 3.463447653429603\n",
+      "Personalization : 3.3167870036101084\n",
+      "Communication : 3.2378158844765346\n",
+      "Action : 3.1024368231046933\n",
+      "Health & Fitness : 3.0798736462093865\n",
+      "Photography : 2.944494584837545\n",
+      "News & Magazines : 2.7978339350180503\n",
+      "Social : 2.6624548736462095\n",
+      "Travel & Local : 2.3240072202166067\n",
+      "Shopping : 2.2450361010830324\n",
+      "Books & Reference : 2.1435018050541514\n",
+      "Simulation : 2.0419675090252705\n",
+      "Dating : 1.861462093862816\n",
+      "Arcade : 1.8501805054151623\n",
+      "Video Players & Editors : 1.7712093862815883\n",
+      "Casual : 1.7486462093862816\n",
+      "Maps & Navigation : 1.3989169675090252\n",
+      "Food & Drink : 1.2409747292418771\n",
+      "Puzzle : 1.128158844765343\n",
+      "Racing : 0.9927797833935018\n",
+      "Role Playing : 0.9363718411552346\n",
+      "Libraries & Demo : 0.9363718411552346\n",
+      "Auto & Vehicles : 0.9250902527075812\n",
+      "Strategy : 0.9138086642599278\n",
+      "House & Home : 0.8348375451263539\n",
+      "Weather : 0.8009927797833934\n",
+      "Events : 0.7107400722021661\n",
+      "Adventure : 0.6768953068592057\n",
+      "Comics : 0.6092057761732852\n",
+      "Beauty : 0.5979241877256317\n",
+      "Art & Design : 0.5979241877256317\n",
+      "Parenting : 0.4963898916967509\n",
+      "Card : 0.4399819494584838\n",
+      "Casino : 0.42870036101083037\n",
+      "Trivia : 0.41741877256317694\n",
+      "Educational;Education : 0.39485559566787\n",
+      "Board : 0.3835740072202166\n",
+      "Educational : 0.3722924187725632\n",
+      "Education;Education : 0.33844765342960287\n",
+      "Word : 0.2594765342960289\n",
+      "Casual;Pretend Play : 0.236913357400722\n",
+      "Music : 0.2030685920577617\n",
+      "Puzzle;Brain Games : 0.18050541516245489\n",
+      "Racing;Action & Adventure : 0.16922382671480143\n",
+      "Entertainment;Music & Video : 0.16922382671480143\n",
+      "Casual;Brain Games : 0.13537906137184114\n",
+      "Casual;Action & Adventure : 0.13537906137184114\n",
+      "Arcade;Action & Adventure : 0.12409747292418773\n",
+      "Action;Action & Adventure : 0.10153429602888085\n",
+      "Educational;Pretend Play : 0.09025270758122744\n",
+      "Simulation;Action & Adventure : 0.078971119133574\n",
+      "Parenting;Education : 0.078971119133574\n",
+      "Entertainment;Brain Games : 0.078971119133574\n",
+      "Board;Brain Games : 0.078971119133574\n",
+      "Parenting;Music & Video : 0.06768953068592057\n",
+      "Educational;Brain Games : 0.06768953068592057\n",
+      "Casual;Creativity : 0.06768953068592057\n",
+      "Art & Design;Creativity : 0.06768953068592057\n",
+      "Education;Pretend Play : 0.056407942238267145\n",
+      "Role Playing;Pretend Play : 0.04512635379061372\n",
+      "Education;Creativity : 0.04512635379061372\n",
+      "Role Playing;Action & Adventure : 0.033844765342960284\n",
+      "Puzzle;Action & Adventure : 0.033844765342960284\n",
+      "Entertainment;Creativity : 0.033844765342960284\n",
+      "Entertainment;Action & Adventure : 0.033844765342960284\n",
+      "Educational;Creativity : 0.033844765342960284\n",
+      "Educational;Action & Adventure : 0.033844765342960284\n",
+      "Education;Music & Video : 0.033844765342960284\n",
+      "Education;Brain Games : 0.033844765342960284\n",
+      "Education;Action & Adventure : 0.033844765342960284\n",
+      "Adventure;Action & Adventure : 0.033844765342960284\n",
+      "Video Players & Editors;Music & Video : 0.02256317689530686\n",
+      "Sports;Action & Adventure : 0.02256317689530686\n",
+      "Simulation;Pretend Play : 0.02256317689530686\n",
+      "Puzzle;Creativity : 0.02256317689530686\n",
+      "Music;Music & Video : 0.02256317689530686\n",
+      "Entertainment;Pretend Play : 0.02256317689530686\n",
+      "Casual;Education : 0.02256317689530686\n",
+      "Board;Action & Adventure : 0.02256317689530686\n",
+      "Video Players & Editors;Creativity : 0.01128158844765343\n",
+      "Trivia;Education : 0.01128158844765343\n",
+      "Travel & Local;Action & Adventure : 0.01128158844765343\n",
+      "Tools;Education : 0.01128158844765343\n",
+      "Strategy;Education : 0.01128158844765343\n",
+      "Strategy;Creativity : 0.01128158844765343\n",
+      "Strategy;Action & Adventure : 0.01128158844765343\n",
+      "Simulation;Education : 0.01128158844765343\n",
+      "Role Playing;Brain Games : 0.01128158844765343\n",
+      "Racing;Pretend Play : 0.01128158844765343\n",
+      "Puzzle;Education : 0.01128158844765343\n",
+      "Parenting;Brain Games : 0.01128158844765343\n",
+      "Music & Audio;Music & Video : 0.01128158844765343\n",
+      "Lifestyle;Pretend Play : 0.01128158844765343\n",
+      "Lifestyle;Education : 0.01128158844765343\n",
+      "Health & Fitness;Education : 0.01128158844765343\n",
+      "Health & Fitness;Action & Adventure : 0.01128158844765343\n",
+      "Entertainment;Education : 0.01128158844765343\n",
+      "Communication;Creativity : 0.01128158844765343\n",
+      "Comics;Creativity : 0.01128158844765343\n",
+      "Casual;Music & Video : 0.01128158844765343\n",
+      "Card;Brain Games : 0.01128158844765343\n",
+      "Card;Action & Adventure : 0.01128158844765343\n",
+      "Books & Reference;Education : 0.01128158844765343\n",
+      "Art & Design;Pretend Play : 0.01128158844765343\n",
+      "Art & Design;Action & Adventure : 0.01128158844765343\n",
+      "Arcade;Pretend Play : 0.01128158844765343\n",
+      "Adventure;Education : 0.01128158844765343\n",
+      "\n",
+      "\n",
+      "Free Android Category App Frequency(Out of 100):\n",
+      "\n",
+      "\n",
+      "FAMILY : 18.456678700361014\n",
+      "GAME : 9.860108303249097\n",
+      "TOOLS : 8.449909747292418\n",
+      "BUSINESS : 4.591606498194946\n",
+      "LIFESTYLE : 3.9034296028880866\n",
+      "PRODUCTIVITY : 3.892148014440433\n",
+      "FINANCE : 3.7003610108303246\n",
+      "MEDICAL : 3.531137184115524\n",
+      "SPORTS : 3.395758122743682\n",
+      "PERSONALIZATION : 3.3167870036101084\n",
+      "COMMUNICATION : 3.2378158844765346\n",
+      "HEALTH_AND_FITNESS : 3.0798736462093865\n",
+      "PHOTOGRAPHY : 2.944494584837545\n",
+      "NEWS_AND_MAGAZINES : 2.7978339350180503\n",
+      "SOCIAL : 2.6624548736462095\n",
+      "TRAVEL_AND_LOCAL : 2.33528880866426\n",
+      "SHOPPING : 2.2450361010830324\n",
+      "BOOKS_AND_REFERENCE : 2.1435018050541514\n",
+      "DATING : 1.861462093862816\n",
+      "VIDEO_PLAYERS : 1.782490974729242\n",
+      "MAPS_AND_NAVIGATION : 1.3989169675090252\n",
+      "EDUCATION : 1.286101083032491\n",
+      "FOOD_AND_DRINK : 1.2409747292418771\n",
+      "ENTERTAINMENT : 1.128158844765343\n",
+      "LIBRARIES_AND_DEMO : 0.9363718411552346\n",
+      "AUTO_AND_VEHICLES : 0.9250902527075812\n",
+      "HOUSE_AND_HOME : 0.8348375451263539\n",
+      "WEATHER : 0.8009927797833934\n",
+      "EVENTS : 0.7107400722021661\n",
+      "ART_AND_DESIGN : 0.6768953068592057\n",
+      "PARENTING : 0.6543321299638989\n",
+      "COMICS : 0.6204873646209386\n",
+      "BEAUTY : 0.5979241877256317\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('Free IOS Prime Genre App Frequency(Out of 100):')\n",
+    "print('\\n')\n",
+    "display_table(free_ios, -5)\n",
+    "print('\\n')\n",
+    "\n",
+    "print('Free Android Genre App Frequency(Out of 100):')\n",
+    "print('\\n')\n",
+    "display_table(free_android, -4)\n",
+    "print('\\n')\n",
+    "\n",
+    "print('Free Android Category App Frequency(Out of 100):')\n",
+    "print('\\n')\n",
+    "display_table(free_android, 1)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### We have generated a frequency table with descending percentage for all our desired data\n",
+    "### The ios app store appears to heavily favor games, with over half of the app store dedicated to it. The following categories aren't even in double digit percentages.\n",
+    "### The highest categories tend to be apps that cater to interests or provide gratification whereas the lowest categories deal with knowledge. \n",
+    "### The highest apps also have a greater degree of variation possible versus knowledge apps that tend to have similar libraries with differing interfaces. \n",
+    "### Although majority of apps are in the game category, that alone isn't enough to make a business decision. We need to also know number of installs and active users."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### The frequency table for the android genres provide a different story than apple, with the overall distribution being much more equal. \n",
+    "### While tools come in at the highest, games could be much higher potentially due to how theres no uniform genre and it is split into multiple subgenres. \n",
+    "### This suspicion is proven while looking at the android category data. Games make up the second highest percentage overall. \n",
+    "### The distribution between android/apple popular apps varies greatly. Android apps have a much more even distribution whereas apple appears to heavily focus on entertainment and interest based platforms. \n",
+    "### A possible reason for this is that the higher start up cost idecentivizes individuals from profucing apps that fail to create a cash flow for themselves. \n",
+    "### Based on what I have found so far, I cannot give a reccommendation without researching further data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Social Networking 71548.34905660378\n",
+      "Photo & Video 28441.54375\n",
+      "Games 22788.6696905016\n",
+      "Music 57326.530303030304\n",
+      "Reference 74942.11111111111\n",
+      "Health & Fitness 23298.015384615384\n",
+      "Weather 52279.892857142855\n",
+      "Utilities 18684.456790123455\n",
+      "Travel 28243.8\n",
+      "Shopping 26919.690476190477\n",
+      "News 21248.023255813954\n",
+      "Navigation 86090.33333333333\n",
+      "Lifestyle 16485.764705882353\n",
+      "Entertainment 14029.830708661417\n",
+      "Food & Drink 33333.92307692308\n",
+      "Sports 23008.898550724636\n",
+      "Book 39758.5\n",
+      "Finance 31467.944444444445\n",
+      "Education 7003.983050847458\n",
+      "Productivity 21028.410714285714\n",
+      "Business 7491.117647058823\n",
+      "Catalogs 4004.0\n",
+      "Medical 612.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "freq_genre_ios = freq_table(free_ios, -5)\n",
+    "for genre in freq_genre_ios: \n",
+    "    total = 0 \n",
+    "    len_genre = 0 \n",
+    "    for app in free_ios: \n",
+    "        genre_app= app[-5]\n",
+    "        if genre_app == genre: \n",
+    "            rating = float(app[5])\n",
+    "            total += rating \n",
+    "            len_genre += 1 \n",
+    "    avg_num_user_rating = total/len_genre\n",
+    "    print(genre, avg_num_user_rating)\n",
+    "### While some of these genres have fairly high numbers, this is also due to extremely popular apps like facebook or spotify. It would be best to choose an app where relative growth is still possible. \n",
+    "### We also want an app that can be accessed daily and for lnger periods of time. \n",
+    "### Reference or productivity apps may be promising in this app store "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "ART_AND_DESIGN 1905351.6666666667\n",
+      "AUTO_AND_VEHICLES 647317.8170731707\n",
+      "BEAUTY 513151.88679245283\n",
+      "BOOKS_AND_REFERENCE 8767811.894736841\n",
+      "BUSINESS 1712290.1474201474\n",
+      "COMICS 817657.2727272727\n",
+      "COMMUNICATION 38456119.167247385\n",
+      "DATING 854028.8303030303\n",
+      "EDUCATION 3082017.543859649\n",
+      "ENTERTAINMENT 21134600.0\n",
+      "EVENTS 253542.22222222222\n",
+      "FINANCE 1387692.475609756\n",
+      "FOOD_AND_DRINK 1924897.7363636363\n",
+      "HEALTH_AND_FITNESS 4188821.9853479853\n",
+      "HOUSE_AND_HOME 1313681.9054054054\n",
+      "LIBRARIES_AND_DEMO 638503.734939759\n",
+      "LIFESTYLE 1437816.2687861272\n",
+      "GAME 15935777.402745996\n",
+      "FAMILY 2690034.0403422983\n",
+      "MEDICAL 120550.61980830671\n",
+      "SOCIAL 23253652.127118643\n",
+      "SHOPPING 7036877.311557789\n",
+      "PHOTOGRAPHY 17840110.40229885\n",
+      "SPORTS 3638640.1428571427\n",
+      "TRAVEL_AND_LOCAL 13984077.710144928\n",
+      "TOOLS 10814477.26835781\n",
+      "PERSONALIZATION 5201482.6122448975\n",
+      "PRODUCTIVITY 16772838.591304347\n",
+      "PARENTING 542603.6206896552\n",
+      "WEATHER 5074486.197183099\n",
+      "VIDEO_PLAYERS 24852732.40506329\n",
+      "NEWS_AND_MAGAZINES 9549178.467741935\n",
+      "MAPS_AND_NAVIGATION 4056941.7741935486\n"
+     ]
+    }
+   ],
+   "source": [
+    "freq_category_android = freq_table(free_android, 1)\n",
+    "for category in freq_category_android: \n",
+    "    total = 0 \n",
+    "    len_category = 0 \n",
+    "    for app in free_android: \n",
+    "        category_app= app[1]\n",
+    "        if category_app == category: \n",
+    "            installs = (app[5])\n",
+    "            installs = installs.replace('+','')\n",
+    "            installs = installs.replace(',','')\n",
+    "            total += float(installs) \n",
+    "            len_category += 1 \n",
+    "    avg_num_user_rating = total/len_category\n",
+    "    print(category, avg_num_user_rating)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
